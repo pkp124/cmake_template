@@ -1,0 +1,25 @@
+# Requirements for ADS Environment
+# Use this with ADS bundled Python (version depends on ADS release)
+
+# Minimal dependencies for ADS automation
+# These should be compatible with older Python versions if needed
+
+# Data processing (use compatible versions for older Python)
+numpy>=1.19.0  # Compatible with Python 3.6+
+pandas>=1.1.0  # Compatible with Python 3.6+
+
+# RF network analysis
+scikit-rf>=0.20.0  # For Touchstone file handling
+
+# Configuration
+pyyaml>=5.3.0
+
+# Logging
+loguru>=0.5.0
+
+# Note: Install these in ADS Python environment:
+# /opt/keysight/ads2023/python/bin/python -m pip install -r requirements_ads.txt
+
+# If your ADS Python is too old (3.6 or earlier), you may need older versions:
+# numpy==1.19.5
+# pandas==1.1.5

@@ -1,0 +1,69 @@
+# Harmonic Balance Testbench Template
+
+name: harmonic_balance_testbench
+type: harmonic_balance
+description: Generic harmonic balance simulation testbench for nonlinear circuits
+
+# Frequency settings
+fundamental_freq: 2.4e9  # Hz
+harmonics: 7
+
+# Sweep parameters
+sweep:
+  type: power
+  parameter: Prf
+  start: -30.0  # dBm
+  stop: 10.0   # dBm
+  step: 1.0
+
+# Sources
+sources:
+  - name: RF_Source
+    type: tone
+    frequency: fundamental_freq
+    power: variable  # Uses sweep parameter
+    impedance: 50.0
+  - name: LO_Source
+    type: tone
+    frequency: 1.8e9  # Hz
+    power: 10.0  # dBm
+    impedance: 50.0
+
+# Loads
+loads:
+  - name: Output_Load
+    impedance: 50.0
+    connection: output
+
+# Measurements
+measurements:
+  - name: Pout
+    type: power
+    harmonic: 1
+  - name: Gain
+    type: gain
+    expression: "Pout - Prf"
+  - name: PAE
+    type: efficiency
+    method: power_added
+  - name: Harmonics
+    type: power
+    harmonic: [2, 3, 4, 5, 6, 7]
+
+# Convergence settings
+convergence:
+  max_iterations: 50
+  tolerance: 1.0e-6
+  method: newton
+
+# Display
+display:
+  - type: rectangular
+    x_axis: Prf
+    y_axes:
+      - Pout
+      - Gain
+  - type: rectangular
+    x_axis: Prf
+    y_axes:
+      - PAE

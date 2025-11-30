@@ -1,0 +1,75 @@
+# Mixer Testbench Template
+
+name: mixer_testbench
+type: harmonic_balance
+description: Mixer characterization testbench
+
+# Frequency settings
+lo_freq: 1.8e9   # Local oscillator frequency (Hz)
+rf_freq: 2.4e9   # RF input frequency (Hz)
+if_freq: 600e6   # IF output frequency (Hz)
+harmonics: 9
+
+# Sweep parameters
+sweep:
+  type: power
+  parameter: Prf
+  start: -40.0  # dBm
+  stop: 0.0    # dBm
+  step: 2.0
+
+# Sources
+sources:
+  - name: LO_Source
+    type: tone
+    frequency: lo_freq
+    power: 10.0  # dBm
+    impedance: 50.0
+  - name: RF_Source
+    type: tone
+    frequency: rf_freq
+    power: variable  # Uses sweep parameter
+    impedance: 50.0
+
+# Loads
+loads:
+  - name: IF_Load
+    impedance: 50.0
+    frequency: if_freq
+  - name: RF_Load
+    impedance: 50.0
+    frequency: rf_freq
+
+# Measurements
+measurements:
+  - name: Pif
+    type: power
+    frequency: if_freq
+  - name: ConversionGain
+    type: gain
+    expression: "Pif - Prf"
+  - name: IIP3
+    type: ip3
+    method: two_tone
+  - name: LO_Leakage
+    type: power
+    frequency: lo_freq
+  - name: RF_Leakage
+    type: power
+    frequency: rf_freq
+  - name: Image_Rejection
+    type: power_ratio
+    frequencies: [rf_freq, rf_freq - 2*if_freq]
+
+# Display
+display:
+  - type: rectangular
+    x_axis: Prf
+    y_axes:
+      - ConversionGain
+      - Pif
+  - type: rectangular
+    x_axis: Prf
+    y_axes:
+      - LO_Leakage
+      - RF_Leakage
