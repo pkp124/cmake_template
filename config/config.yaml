@@ -1,0 +1,51 @@
+# ADS Testbench Configuration
+
+simulation:
+  default_solver: "harmonic_balance"
+  frequency:
+    start: 0.0
+    stop: 10.0e9
+    points: 201
+  convergence:
+    max_iterations: 50
+    tolerance: 1.0e-6
+
+data_extraction:
+  formats:
+    - touchstone
+    - csv
+    - matlab
+  s_parameters:
+    export_magnitude: true
+    export_phase: true
+    export_real_imag: true
+    reference_impedance: 50.0
+
+pyaedt_settings:
+  hfss:
+    solution_type: "Modal"
+    max_delta_s: 0.01
+    max_passes: 20
+  maxwell:
+    solution_type: "Transient"
+    stop_time: "1ms"
+    time_step: "1us"
+
+ads_settings:
+  schematic:
+    default_units: "mm"
+    grid_size: 0.1
+  layout:
+    technology: "microstrip"
+    substrate_height: 1.6
+    dielectric_constant: 4.4
+
+workflow:
+  auto_backup: true
+  backup_interval: 300  # seconds
+  cleanup_temp_files: true
+  
+logging:
+  console_level: "INFO"
+  file_level: "DEBUG"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

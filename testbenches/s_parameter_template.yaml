@@ -1,0 +1,52 @@
+# S-Parameter Testbench Template
+
+name: s_parameter_testbench
+type: s_parameter
+description: Generic S-parameter measurement testbench
+
+# Frequency settings
+frequency:
+  start: 0.0
+  stop: 10.0e9
+  points: 201
+  scale: linear  # linear or log
+
+# Port configuration
+ports:
+  - name: Port1
+    number: 1
+    impedance: 50.0
+    power: 0.0  # dBm
+  - name: Port2
+    number: 2
+    impedance: 50.0
+    power: 0.0  # dBm
+
+# Measurements
+measurements:
+  - S11
+  - S12
+  - S21
+  - S22
+
+# Display options
+display:
+  - type: rectangular
+    traces:
+      - S11
+      - S22
+    format: magnitude_db
+  - type: smith_chart
+    traces:
+      - S11
+      - S22
+  - type: rectangular
+    traces:
+      - S21
+      - S12
+    format: magnitude_db
+
+# Simulation settings
+simulation:
+  solver: frequency_domain
+  max_delta_s: 0.01
