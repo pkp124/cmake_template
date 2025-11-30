@@ -4,9 +4,29 @@ This guide will help you set up and start using the ADS Testbench Development fr
 
 ## Prerequisites
 
+### ⚠️ CRITICAL: Python Version Compatibility
+
+**Before you start, understand the Python version requirements:**
+
+PyAEDT and ADS may require **different Python versions** depending on your ADS release:
+
+| Your ADS Version | Python Requirement | Integration Method |
+|-----------------|-------------------|-------------------|
+| ADS 2023+ | Python 3.8+ bundled | ✓ Single environment |
+| ADS 2022 | Python 3.7 bundled | ⚠️ May need separate envs |
+| ADS 2020-2021 | Python 3.6 bundled | ⚠️ Separate environments |
+| ADS 2019 or older | Python 2.7/3.6 | ✗ File-based only |
+
+**Action Required:**
+1. Run `python check_compatibility.py` to check your setup
+2. Read [Python Compatibility Guide](python_compatibility.md)
+3. Choose the appropriate installation method
+
 ### Software Requirements
 
-1. **Keysight ADS** (2023 or later)
+1. **Keysight ADS**
+   - **ADS 2023 or later** (Recommended - Python 3.8+ included)
+   - **OR ADS 2020-2022** (Use decoupled architecture)
    - Installed and licensed
    - Python API enabled
 
@@ -14,9 +34,9 @@ This guide will help you set up and start using the ADS Testbench Development fr
    - HFSS, Maxwell, or other AEDT tools
    - PyAEDT compatible version
 
-3. **Python** (3.8 or higher)
-   - Recommended: Python 3.9 or 3.10
-   - Virtual environment support
+3. **Python** 
+   - **Python 3.8 or higher** for PyAEDT
+   - May need separate environment for ADS (see compatibility guide)
 
 ### Hardware Requirements
 
@@ -26,14 +46,29 @@ This guide will help you set up and start using the ADS Testbench Development fr
 
 ## Installation
 
-### 1. Clone the Repository
+### Step 0: Check Compatibility (REQUIRED)
+
+```bash
+# Run compatibility checker
+python check_compatibility.py
+```
+
+This will tell you which installation method to use.
+
+---
+
+### Method A: Single Environment (ADS 2023+ only)
+
+Use this if you have ADS 2023 or later with Python 3.8+.
+
+#### 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
 cd <repository-name>
 ```
 
-### 2. Create Virtual Environment
+#### 2. Create Virtual Environment
 
 ```bash
 # Create virtual environment
@@ -46,11 +81,62 @@ source venv/bin/activate
 venv\Scripts\activate
 ```
 
-### 3. Install Dependencies
+#### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
+
+---
+
+### Method B: Decoupled Architecture (ADS 2022 or earlier)
+
+Use this if you have older ADS versions.
+
+#### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd <repository-name>
+```
+
+#### 2. Create PyAEDT Environment
+
+```bash
+# Create PyAEDT environment with Python 3.8+
+python3.9 -m venv venv_pyaedt
+
+# Activate
+source venv_pyaedt/bin/activate  # Linux/Mac
+# or
+venv_pyaedt\Scripts\activate  # Windows
+
+# Install PyAEDT requirements
+pip install -r requirements_pyaedt.txt
+```
+
+#### 3. Install ADS Requirements
+
+```bash
+# Use ADS bundled Python
+/opt/keysight/ads2022/python/bin/python -m pip install -r requirements_ads.txt
+
+# Windows example:
+# "C:\Program Files\Keysight\ADS2022\python\python.exe" -m pip install -r requirements_ads.txt
+```
+
+#### 4. Usage Pattern
+
+```bash
+# For PyAEDT operations (use PyAEDT environment)
+source venv_pyaedt/bin/activate
+python scripts/extract_from_hfss.py
+
+# For ADS operations (use ADS Python)
+/opt/keysight/ads2022/python/bin/python scripts/import_to_ads.py
+```
+
+---
 
 ### 4. Configure Environment
 

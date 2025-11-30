@@ -36,27 +36,68 @@ This project provides automation tools and workflows for:
 
 ## Quick Start
 
+### ⚠️ Important: Python Version Compatibility
+
+**PyAEDT and ADS have different Python requirements!**
+
+- **PyAEDT**: Requires Python 3.7+ (preferably 3.8+)
+- **ADS 2023+**: Includes Python 3.8+ ✓ Compatible
+- **ADS 2020-2022**: May use Python 3.6 or 3.7 ⚠️ Limited compatibility
+- **ADS 2019 or older**: Uses Python 2.7 or 3.6 ✗ Not compatible
+
+**Before installing, run the compatibility checker:**
+```bash
+python check_compatibility.py
+```
+
+See **[Python Compatibility Guide](docs/python_compatibility.md)** for detailed solutions.
+
 ### Prerequisites
 
-- Python 3.8 or higher
-- Keysight ADS 2023 or later
-- Ansys Electronics Desktop 2023 R1 or later (for PyAEDT)
-- Required Python packages (see `requirements.txt`)
+- **Python 3.8 or higher** (for PyAEDT)
+- **Keysight ADS** (2023+ recommended, or use decoupled architecture)
+- **Ansys Electronics Desktop 2023 R1 or later** (for PyAEDT)
+- Required Python packages (see appropriate requirements file)
 
 ### Installation
+
+**IMPORTANT: Choose the right installation method for your ADS version!**
+
+#### Option 1: ADS 2023+ (Single Environment - Recommended)
+
+If you have ADS 2023 or later with Python 3.8+:
 
 ```bash
 # Clone the repository
 git clone <repository-url>
 cd <repository-name>
 
-# Install dependencies
+# Check compatibility first
+python check_compatibility.py
+
+# Install all dependencies (if compatible)
 pip install -r requirements.txt
 
 # Set up environment variables
 cp config/env.template config/.env
 # Edit config/.env with your ADS and AEDT installation paths
 ```
+
+#### Option 2: Older ADS Versions (Decoupled Architecture)
+
+If you have ADS 2022 or earlier:
+
+```bash
+# Create separate PyAEDT environment
+python3.9 -m venv venv_pyaedt
+source venv_pyaedt/bin/activate
+pip install -r requirements_pyaedt.txt
+
+# Install ADS requirements in ADS Python
+/path/to/ads/python/bin/python -m pip install -r requirements_ads.txt
+```
+
+**See [Python Compatibility Guide](docs/python_compatibility.md) for detailed instructions.**
 
 ### Basic Usage
 
